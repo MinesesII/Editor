@@ -24,8 +24,7 @@ public class Main extends SimpleApplication implements ScreenController
 { 
 	Vector2f oldposition;
 	private static Main editor;
-	private Node theObject = new Node ("The object"); // Node of the object
-	private boolean isObject=false; // Verify if the object existe
+	private TheObject theObject;
 	private Socle socle;
 	private Events events;
 	private GUI gui;
@@ -34,8 +33,7 @@ public class Main extends SimpleApplication implements ScreenController
 	{
 		Main app = new Main();
 		app.setPauseOnLostFocus(false);
-		app.setShowSettings(false);
-		app.start(); // start the editor
+		app.start();
 	}
 
 	@Override
@@ -59,7 +57,7 @@ public class Main extends SimpleApplication implements ScreenController
 	@Override
 	public void simpleUpdate(float tpf) 
 	{
-		if(events.isLeftClicPressed() && isObject)
+		if(events.isLeftClicPressed() && theObject != null)
 		{
 			inputManager.setCursorVisible(false);
 			
@@ -89,13 +87,8 @@ public class Main extends SimpleApplication implements ScreenController
 		
 		if(gui.isCreatingDefaultObject()){
 			
-			Geometry model = new Geometry("Box", new Box(1, 1, 1));  
-			Material mat = new Material(assetManager,"Common/MatDefs/Misc/Unshaded.j3md");  
-			mat.setTexture("ColorMap", assetManager.loadTexture("Glowstone.png"));
-			model.setMaterial(mat);              
-			theObject.attachChild(model);
-			rootNode.attachChild(theObject);   
-			isObject=true;
+			theObject = new TheObject();
+			rootNode.attachChild(theObject);
 		}
 	}
 
