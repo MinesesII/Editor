@@ -3,7 +3,7 @@
     <useStyles filename="nifty-default-styles.xml" />
     <useControls filename="nifty-default-controls.xml" />
     
-    <screen id="start" controller="Editor.Main">
+    <screen id="start" controller="Editor.GUI">
         <layer id="layer" childLayout="center">
             <panel id = "panel2" height="0%" width="0%" align="left" valign="top" childLayout="vertical">
                 <control name="button" label="Create" id="StartButton" align="left" valign="center" visibleToMouse="true">

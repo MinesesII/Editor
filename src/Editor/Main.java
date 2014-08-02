@@ -25,14 +25,16 @@ public class Main extends SimpleApplication implements ScreenController
 	Vector2f oldposition;
 	private static Main editor;
 	private Node theObject = new Node ("The object"); // Node of the object
-	private Nifty nifty; // GUI
 	private boolean isObject=false; // Verify if the object existe
-
+	private Socle socle;
+	private Events events;
+	private GUI gui;
 
 	public static void main(String[] args)
 	{
 		Main app = new Main();
 		app.setPauseOnLostFocus(false);
+		app.setShowSettings(false);
 		app.start(); // start the editor
 	}
 
@@ -40,11 +42,61 @@ public class Main extends SimpleApplication implements ScreenController
 	public void simpleInitApp() 
 	{
 		editor = this;
+		this.flyCam.setEnabled(false);
+		
 		makeBackground();
-		createBase();
-		initializeControls(); 
-		createButton();
+		
+		events = new Events();
+		
+		gui = new GUI();
+		
+		socle = new Socle();
+		rootNode.attachChild(socle);
+		
 		oldposition = inputManager.getCursorPosition().clone();
+	}
+	
+	@Override
+	public void simpleUpdate(float tpf) 
+	{
+		if(events.isLeftClicPressed() && isObject)
+		{
+			inputManager.setCursorVisible(false);
+			
+			Vector2f newposition = Main.getEditor().getInputManager().getCursorPosition();
+			if(newposition.getX()<oldposition.getX())
+			{
+				theObject.rotate(0,(float)-0.03, 0);
+			}
+			else if(newposition.getX()>oldposition.getX())
+			{
+				theObject.rotate(0,(float)0.03, 0);
+			}
+			if(newposition.getY()<oldposition.getY())
+			{
+				theObject.rotate((float)0.03, 0, 0);
+			}
+			else if(newposition.getY()>oldposition.getY())
+			{
+				theObject.rotate((float)-0.03, 0, 0);
+			}		
+			oldposition = newposition.clone() ;
+		}
+		else
+		{
+			inputManager.setCursorVisible(true);
+		}
+		
+		if(gui.isCreatingDefaultObject()){
+			
+			Geometry model = new Geometry("Box", new Box(1, 1, 1));  
+			Material mat = new Material(assetManager,"Common/MatDefs/Misc/Unshaded.j3md");  
+			mat.setTexture("ColorMap", assetManager.loadTexture("Glowstone.png"));
+			model.setMaterial(mat);              
+			theObject.attachChild(model);
+			rootNode.attachChild(theObject);   
+			isObject=true;
+		}
 	}
 
 	private void makeBackground()
@@ -59,119 +111,6 @@ public class Main extends SimpleApplication implements ScreenController
 		pv.attachScene(p);
 		p.updateGeometricState();
 		viewPort.setClearFlags(false, true, true);
-	}
-
-	private void createBase()
-	{
-		Node socle = new Node("socle");
-		Geometry base = new Geometry("Box", new Box((float)0.6,(float) 0.1, (float)0.6));  
-		Geometry base1 = new Geometry("Box", new Box((float)0.2,(float) 1, (float)0.2));  
-		Geometry base2 = new Geometry("Box", new Box((float)0.5,(float) 0.1, (float)0.5));  
-		Material mat = new Material(assetManager,"Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setTexture("ColorMap", assetManager.loadTexture("Socle.png"));
-		base.setMaterial(mat); 
-		base1.setMaterial(mat);  
-		base2.setMaterial(mat); 
-		socle.attachChild(base); 
-		socle.attachChild(base1);
-		socle.attachChild(base2);
-		base.setLocalTranslation(0,(float) -3.8, 0);
-		base1.setLocalTranslation(0, (float)-2.8, 0);
-		base2.setLocalTranslation(0, (float)-1.8, 0);
-		rootNode.attachChild(socle);
-	}
-
-	public void createDefaultObject()
-	{
-		Geometry model = new Geometry("Box", new Box(1, 1, 1));  
-		Material mat = new Material(assetManager,"Common/MatDefs/Misc/Unshaded.j3md");  
-		mat.setTexture("ColorMap", assetManager.loadTexture("Glowstone.png"));
-		model.setMaterial(mat);              
-		theObject.attachChild(model);
-		rootNode.attachChild(theObject);   
-		isObject=true;
-	}
-
-	private void initializeControls()
-	{
-		this.flyCam.setEnabled(false);
-		inputManager.setCursorVisible(true);
-		inputManager.addMapping("leftclick", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
-		inputManager.addMapping("right", new KeyTrigger(KeyInput.KEY_RIGHT));
-		inputManager.addMapping("left", new KeyTrigger(KeyInput.KEY_LEFT));
-		inputManager.addMapping("down", new KeyTrigger(KeyInput.KEY_DOWN));
-		inputManager.addMapping("up", new KeyTrigger(KeyInput.KEY_UP));
-		inputManager.addListener(analogListener, "leftclick", "right", "left", "down" , "up");
-		inputManager.addListener(actionListener, "leftclick");
-
-	}
-
-	private AnalogListener  analogListener  = new AnalogListener ()
-	{
-		public void onAnalog(String name, float arg1, float arg2) 
-		{
-			if(name.contentEquals("leftclick") && isObject)
-			{
-				Vector2f newposition = inputManager.getCursorPosition();
-				if(newposition.getX()<oldposition.getX())
-				{
-					theObject.rotate(0,(float)-0.03, 0);
-				}
-				else if(newposition.getX()>oldposition.getX())
-				{
-					theObject.rotate(0,(float)0.03, 0);
-				}
-				if(newposition.getY()<oldposition.getY())
-				{
-					theObject.rotate((float)0.03, 0, 0);
-				}
-				else if(newposition.getY()>oldposition.getY())
-				{
-					theObject.rotate((float)-0.03, 0, 0);
-				}		
-				oldposition = newposition.clone() ;
-			}
-			/*	if(name.contentEquals("right"))
-			{
-				rootNode.move((float)0.005, 0, 0);
-			}
-			else if(name.contentEquals("left"))
-			{
-				rootNode.move((float)-0.005, 0, 0);
-			}
-			if(name.contentEquals("up"))
-			{
-				rootNode.move(0, (float)0.005, 0);
-			}
-			else if(name.contentEquals("down"))
-			{
-				rootNode.move(0, (float)-0.005, 0);
-			}*/
-		}
-	};
-
-	private ActionListener actionListener = new ActionListener() 
-	{
-		public void onAction(String name, boolean keyPressed, float tpf) 
-		{
-			if(name.contentEquals("leftclick") && keyPressed && isObject)
-			{
-				inputManager.setCursorVisible(false);
-			}
-			else
-			{
-				inputManager.setCursorVisible(true);
-			}
-		}
-	};
-
-	//create the button
-	public void createButton()
-	{
-		NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager,inputManager,audioRenderer,guiViewPort);
-		nifty = niftyDisplay.getNifty();
-		nifty.fromXml("Interface/Button.xml", "start", this);
-		guiViewPort.addProcessor(niftyDisplay);
 	}
 
 	//return wherever is the code the main class
