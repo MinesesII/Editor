@@ -73,7 +73,13 @@ public class Main extends SimpleApplication implements ScreenController
 		
 		if(getGui().isCreatingDefaultObject() && theObject == null)
 		{		
-			theObject = new TheObject();
+			theObject = new TheObject(1);
+			rootNode.attachChild(theObject);
+		}
+		
+		if(getGui().isCreatingComplexeObject() && theObject == null)
+		{		
+			theObject = new TheObject(2);
 			rootNode.attachChild(theObject);
 		}
 	}

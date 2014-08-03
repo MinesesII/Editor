@@ -10,14 +10,26 @@ public class MenuControl
 implements EventTopicSubscriber<MenuItemActivatedEvent> 
 {
 
-@Override
-public void onEvent(final String id, final MenuItemActivatedEvent event) 
-{
-	Editor.GUI.menuItem item = (menuItem) event.getItem();
-   if ("newblock".equals(item.id)) 
-   {
-	   Main.getEditor().getGui().createDefaultObject();
-   }
-}
+	@Override
+	public void onEvent(final String id, final MenuItemActivatedEvent event) 
+	{
+		Editor.GUI.menuItem item = (menuItem) event.getItem();
+		if ("newblock".equals(item.id)) 
+		{
+			Main.getEditor().getGui().showMenuCreateBlock();
+		}
+		if ("newSimpleBlock".equals(item.id)) 
+		{
+			Main.getEditor().getGui().createDefaultObject();
+		}
+		if ("newComplexeBlock".equals(item.id)) 
+		{
+			Main.getEditor().getGui().createComplexeObject();
+		}
+		if ("editBlock".equals(item.id)) 
+		{
+			Main.getEditor().getGui().createComplexeObject();
+		}
+	}
 };
 
