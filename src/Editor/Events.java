@@ -1,7 +1,9 @@
 package Editor;
 
+import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 
 public class Events implements ActionListener
@@ -20,6 +22,10 @@ public class Events implements ActionListener
 		
 		Main.getEditor().getInputManager().setCursorVisible(true);
 		Main.getEditor().getInputManager().addMapping("leftclick", new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+		Main.getEditor().getInputManager().addMapping("right", new KeyTrigger(KeyInput.KEY_RIGHT));
+		Main.getEditor().getInputManager().addMapping("left", new KeyTrigger(KeyInput.KEY_LEFT));
+		Main.getEditor().getInputManager().addMapping("down", new KeyTrigger(KeyInput.KEY_DOWN));
+		Main.getEditor().getInputManager().addMapping("up", new KeyTrigger(KeyInput.KEY_UP));
 		Main.getEditor().getInputManager().addListener(this, "leftclick");
 
 	}

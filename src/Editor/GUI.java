@@ -93,7 +93,7 @@ public class GUI implements ScreenController
 		nifty.showPopup(nifty.getCurrentScreen(), popup.getId(), null); 
 	}
 	
-	@SuppressWarnings({ "rawtypes" })
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void createPopupMenuEdit()
 	{
 		popup = nifty.createPopup("niftyPopupMenu");

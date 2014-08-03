@@ -20,23 +20,22 @@ public class TheObject extends Node
 		}
 		else
 		{
-			Geometry model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f));
+			Geometry model;
 			for (int x = 0; x<8; x++)
 			{
 				for (int y = 0; y<8; y++)
 				{
 					for (int z = 0; z<8; z++)
 					{
-						model = model.clone();
-						model.setLocalTranslation((0.25f*x)-1f,(0.25f*y)-1f,(0.25f*z)-1f);
+						model = new Geometry("Cube"+(x+y+z), new Box(0.125f,0.125f,0.125f));
+						model.setLocalTranslation((0.25f*x)-0.875f,(0.25f*y)-0.875f,(0.25f*z)-0.875f);
 						attachChild(model);
 					}
 				}
 			}
+			Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+			mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Test.png")); 
+			setMaterial(mat);
 		}
-		
-		Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Test.png")); 
-		setMaterial(mat);
 	}
 }
