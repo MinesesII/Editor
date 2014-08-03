@@ -120,6 +120,33 @@ public class Main extends SimpleApplication implements ScreenController
 		rootNode.attachChild(selectionCube);
 		selectionCube.setLocalTranslation(new Vector3f(-0.875f,-0.875f,0.875f));
 	}
+	
+	public void passToNormalEdit()
+	{
+		isAdvancedEdit=false;
+		cam.setLocation(new Vector3f(cam.getLocation().x, cam.getLocation().y, cam.getLocation().z+6));
+		rootNode.detachChild(selectionCube);
+	}
+	
+	public void setSelectionCubeDirection(String direction)
+	{
+		if(direction.contentEquals("up")&&selectionCube.getLocalTranslation().y!=0.875)
+		{
+			selectionCube.setLocalTranslation(selectionCube.getLocalTranslation().x,selectionCube.getLocalTranslation().y+0.25f,selectionCube.getLocalTranslation().z);
+		}
+		else if(direction.contentEquals("down")&&selectionCube.getLocalTranslation().y!=-0.875)
+		{
+			selectionCube.setLocalTranslation(selectionCube.getLocalTranslation().x,selectionCube.getLocalTranslation().y-0.25f,selectionCube.getLocalTranslation().z);
+		}
+		if(direction.contentEquals("left")&&selectionCube.getLocalTranslation().x!=-0.875)
+		{
+			selectionCube.setLocalTranslation(selectionCube.getLocalTranslation().x-0.25f,selectionCube.getLocalTranslation().y,selectionCube.getLocalTranslation().z);
+		}
+		else if(direction.contentEquals("right")&&selectionCube.getLocalTranslation().x!=0.875)
+		{
+			selectionCube.setLocalTranslation(selectionCube.getLocalTranslation().x+0.25f,selectionCube.getLocalTranslation().y,selectionCube.getLocalTranslation().z);
+		}
+	}
 
 	//return wherever is the code the main class
 	public static Main getEditor()
@@ -135,6 +162,16 @@ public class Main extends SimpleApplication implements ScreenController
 	public boolean isAdvancedMode() 
 	{
 		return isAdvancedEdit;
+	}
+	
+	public TheObject getObject()
+	{
+		return theObject;
+	}
+	
+	public Geometry getSelection()
+	{
+		return selectionCube;
 	}
 
 	@Override

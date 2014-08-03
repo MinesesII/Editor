@@ -26,11 +26,18 @@ implements EventTopicSubscriber<MenuItemActivatedEvent>
 		{
 			Main.getEditor().getGui().createComplexeObject();
 		}
-		if ("Avancededit".equals(item.id)) 
+		if ("advancemod".equals(item.id)) 
 		{
-			if(!Main.getEditor().isAdvancedMode())
+			if(!Main.getEditor().isAdvancedMode() && Main.getEditor().getObject()!=null)
 			{
 				Main.getEditor().passToAdvancedEdit();
+			}
+		}
+		if ("normalmod".equals(item.id)) 
+		{
+			if(Main.getEditor().isAdvancedMode())
+			{
+				Main.getEditor().passToNormalEdit();
 			}
 		}
 	}

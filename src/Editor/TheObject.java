@@ -38,4 +38,17 @@ public class TheObject extends Node
 			setMaterial(mat);
 		}
 	}
+	
+	public void deleteBlock()
+	{
+		for(int i = 0 ; i < getQuantity(); i++)
+		{
+			System.out.println(getChild(i).getLocalTranslation()+""+Main.getEditor().getSelection().getLocalTranslation());
+			if(getChild(i).getLocalTranslation().x==Main.getEditor().getSelection().getLocalTranslation().x && getChild(i).getLocalTranslation().y==Main.getEditor().getSelection().getLocalTranslation().y && getChild(i).getLocalTranslation().z==Main.getEditor().getSelection().getLocalTranslation().z)
+			{
+				this.detachChildAt(i);
+				return;
+			}
+		}
+	}
 }

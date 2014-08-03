@@ -25,13 +25,13 @@ public class GUI implements ScreenController
 		nifty.fromXml("Interface/Button.xml", "start", this);
 		Main.getEditor().getGuiViewPort().addProcessor(niftyDisplay);
 	}
-	
+
 
 	public void createDefaultObject()
 	{
 		createDefaultObject = true;
 	}
-	
+
 	public boolean isCreatingDefaultObject()
 	{
 		if(createDefaultObject)
@@ -41,12 +41,12 @@ public class GUI implements ScreenController
 		}
 		return false;
 	}
-	
+
 	public void createComplexeObject()
 	{
 		createComplexeObject = true;
 	}
-	
+
 	public boolean isCreatingComplexeObject()
 	{
 		if(createComplexeObject)
@@ -56,7 +56,7 @@ public class GUI implements ScreenController
 		}
 		return false;
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void createPopupMenuCreate()
 	{
@@ -75,7 +75,7 @@ public class GUI implements ScreenController
 		createPopupMenuCreate() ;
 		nifty.showPopup(nifty.getCurrentScreen(), popup.getId(), null); 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void createPopupMenuCreateBlock()
 	{
@@ -86,23 +86,30 @@ public class GUI implements ScreenController
 		menucreate.addMenuItem("complexe block", "Arrow.png", new menuItem("newComplexeBlock", "Create new block"));
 		nifty.subscribe(nifty.getCurrentScreen(), menucreate.getId(), MenuItemActivatedEvent.class, new MenuControl());
 	}
-	
+
 	public void showMenuCreateBlock() 
 	{ 
 		createPopupMenuCreateBlock() ;
 		nifty.showPopup(nifty.getCurrentScreen(), popup.getId(), null); 
 	}
-	
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void createPopupMenuEdit()
 	{
 		popup = nifty.createPopup("niftyPopupMenu");
 		Menu menucreate = popup.findNiftyControl("#menu", Menu.class);
 		menucreate.setWidth(new SizeValue("140px")); 
-		menucreate.addMenuItem("Advanced edit", "Arrow.png", new menuItem("Avancededit", "Advanced edit"));
+		if(!Main.getEditor().isAdvancedMode())
+		{
+			menucreate.addMenuItem("Advanced mod", "Arrow.png", new menuItem("advancemod", "Advanced mod"));
+		}
+		else
+		{
+			menucreate.addMenuItem("Normal mod", "Arrow.png", new menuItem("normalmod", "Normal mod"));
+		}
 		nifty.subscribe(nifty.getCurrentScreen(), menucreate.getId(), MenuItemActivatedEvent.class, new MenuControl());
 	}
-	
+
 	public void showMenuEdit() 
 	{ 
 		createPopupMenuEdit() ;
