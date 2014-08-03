@@ -71,7 +71,7 @@ public class Main extends SimpleApplication implements ScreenController
 			inputManager.setCursorVisible(true);
 		}
 		
-		if(getGui().isCreatingDefaultObject())
+		if(getGui().isCreatingDefaultObject() && theObject == null)
 		{		
 			theObject = new TheObject();
 			rootNode.attachChild(theObject);
