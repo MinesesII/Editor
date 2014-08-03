@@ -4,11 +4,13 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.MouseButtonTrigger;
 
-public class Events implements ActionListener{
+public class Events implements ActionListener
+{
 	
 	private boolean leftClicPressed = false;
 	
-	public Events(){
+	public Events()
+	{
 		
 		initializeControls();
 	}
@@ -23,15 +25,16 @@ public class Events implements ActionListener{
 	}
 
 	@Override
-	public void onAction(String name, boolean keyPressed, float tpf) {
-		// TODO Auto-generated method stub
+	public void onAction(String name, boolean keyPressed, float tpf) 
+	{
 		if(name.contentEquals("leftclick"))
 		{
 			leftClicPressed = keyPressed;
 		}
 	}
 	
-	public boolean isLeftClicPressed(){
+	public boolean isLeftClicPressed()
+	{
 		
 		return leftClicPressed;
 	}

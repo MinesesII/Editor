@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
-    <useStyles filename="nifty-default-styles.xml" />
-    <useControls filename="nifty-default-controls.xml" />
-    
-    <screen id="start" controller="Editor.GUI">
-        <layer id="layer" childLayout="center">
-            <panel id = "panel2" height="0%" width="0%" align="left" valign="top" childLayout="vertical">
-                <control name="button" label="Create" id="StartButton" align="left" valign="center" visibleToMouse="true">
-                    <interact onClick="createDefaultObject()" />
-                </control>
-                <control name="button" label="Options" id="OptButton" align="left" valign="center" visibleToMouse="true">
-                    <interact onClick="options()" />
-                </control>
-                <control name="button" label="Quit" id="QuitButton" align="left" valign="center" visibleToMouse="true">
-                    <interact onClick="quit()" />
-                </control>
-            </panel>
-        </layer>
-   </screen>
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty-1.3.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty-1.3.xsd http://nifty-gui.sourceforge.net/nifty-1.3.xsd">
+	<useStyles filename="nifty-default-styles.xml" />
+	<useControls filename="nifty-default-controls.xml" />
+
+	<screen id="start" controller="Editor.GUI">
+		<layer id="layer" childLayout="center">
+			<panel id="panel2" height="5%" width="5%" align="left" valign="top"
+				childLayout="horizontal">
+				<control name="button" label="Create" id="CreateButton"
+					align="left" valign="center" visibleToMouse="true">
+					<interact onClick="showMenuCreate()" />
+				</control>
+				<control name="button" label="Edit" id="EditButton"
+					align="left" valign="center" visibleToMouse="true">
+					<interact onClick="showMenuEdit()" />
+				</control>
+			</panel>
+		</layer>
+	</screen>
 </nifty>

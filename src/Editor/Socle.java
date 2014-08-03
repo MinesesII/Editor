@@ -5,9 +5,11 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 
-public class Socle extends Node{
+public class Socle extends Node
+{
 
-	public Socle(){
+	public Socle()
+	{
 		
 		Geometry base = new Geometry("Box", new Box((float)0.6,(float) 0.1, (float)0.6));  
 		Geometry base1 = new Geometry("Box", new Box((float)0.2,(float) 1, (float)0.2));  
