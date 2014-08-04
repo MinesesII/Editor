@@ -47,19 +47,19 @@ public class Events implements ActionListener
 		{
 			if(Main.getEditor().isAdvancedMode())
 			{
-				// Reset results list.
 				CollisionResults results = new CollisionResults();
-				// Convert screen click to 3d position
 				Vector2f click2d = Main.getEditor().getInputManager().getCursorPosition();
 				Vector3f click3d = Main.getEditor().getCam().getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 0f).clone();
 				Vector3f dir = Main.getEditor().getCam().getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
-				// Aim the ray from the clicked spot forwards.
 				Ray ray = new Ray(click3d, dir);
-				// Collect intersections between ray and all nodes in results list.
 				Main.getEditor().getObject().collideWith(ray, results);
-				if(results.size()!=0)
+				if(results.size()!=0 && !results.getCollision(0).getGeometry().getName().contentEquals("SelectionCube"))
 				{
 					Main.getEditor().getSelection().setLocalTranslation(results.getCollision(0).getGeometry().getLocalTranslation());
+				}
+				else if (results.size()>1)
+				{
+					Main.getEditor().getSelection().setLocalTranslation(results.getCollision(1).getGeometry().getLocalTranslation());
 				}
 			}
 		}
