@@ -7,6 +7,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Geometry;
@@ -51,7 +52,7 @@ public class Main extends SimpleApplication implements ScreenController
 	@Override
 	public void simpleUpdate(float tpf) 
 	{
-		if(events.isLeftClicPressed() && theObject != null && !isAdvancedEdit)
+		if(events.isLeftClicPressed() && theObject != null)
 		{
 			inputManager.setCursorVisible(false);
 
@@ -64,11 +65,11 @@ public class Main extends SimpleApplication implements ScreenController
 			{
 				theObject.rotate(0,(float)0.03, 0);
 			}
-			if(newposition.getY()<oldposition.getY())
+			if(newposition.getY()<oldposition.getY()  && !isAdvancedEdit)
 			{
 				theObject.rotate((float)0.03, 0, 0);
 			}
-			else if(newposition.getY()>oldposition.getY())
+			else if(newposition.getY()>oldposition.getY()  && !isAdvancedEdit)
 			{
 				theObject.rotate((float)-0.03, 0, 0);
 			}		
@@ -117,32 +118,32 @@ public class Main extends SimpleApplication implements ScreenController
 		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 		selectionCube.setQueueBucket(Bucket.Translucent); 
 		selectionCube.setMaterial(mat);
-		rootNode.attachChild(selectionCube);
+		theObject.attachChild(selectionCube);
 		selectionCube.setLocalTranslation(new Vector3f(-0.875f,-0.875f,0.875f));
 	}
-	
+
 	public void passToNormalEdit()
 	{
 		isAdvancedEdit=false;
 		cam.setLocation(new Vector3f(cam.getLocation().x, cam.getLocation().y, cam.getLocation().z+6));
-		rootNode.detachChild(selectionCube);
+		theObject.detachChild(selectionCube);
 	}
-	
+
 	public void setSelectionCubeDirection(String direction)
 	{
-		if(direction.contentEquals("up")&&selectionCube.getLocalTranslation().y!=0.875)
+		if(direction.contentEquals("up") && selectionCube.getLocalTranslation().y!=0.875)
 		{
 			selectionCube.setLocalTranslation(selectionCube.getLocalTranslation().x,selectionCube.getLocalTranslation().y+0.25f,selectionCube.getLocalTranslation().z);
 		}
-		else if(direction.contentEquals("down")&&selectionCube.getLocalTranslation().y!=-0.875)
+		else if(direction.contentEquals("down") && selectionCube.getLocalTranslation().y!=-0.875)
 		{
 			selectionCube.setLocalTranslation(selectionCube.getLocalTranslation().x,selectionCube.getLocalTranslation().y-0.25f,selectionCube.getLocalTranslation().z);
 		}
-		if(direction.contentEquals("left")&&selectionCube.getLocalTranslation().x!=-0.875)
+		if(direction.contentEquals("left") && selectionCube.getLocalTranslation().x!=-0.875)
 		{
 			selectionCube.setLocalTranslation(selectionCube.getLocalTranslation().x-0.25f,selectionCube.getLocalTranslation().y,selectionCube.getLocalTranslation().z);
 		}
-		else if(direction.contentEquals("right")&&selectionCube.getLocalTranslation().x!=0.875)
+		else if(direction.contentEquals("right") && selectionCube.getLocalTranslation().x!=0.875)
 		{
 			selectionCube.setLocalTranslation(selectionCube.getLocalTranslation().x+0.25f,selectionCube.getLocalTranslation().y,selectionCube.getLocalTranslation().z);
 		}
@@ -158,20 +159,25 @@ public class Main extends SimpleApplication implements ScreenController
 	{
 		return gui;
 	}
-	
+
 	public boolean isAdvancedMode() 
 	{
 		return isAdvancedEdit;
 	}
-	
+
 	public TheObject getObject()
 	{
 		return theObject;
 	}
-	
+
 	public Geometry getSelection()
 	{
 		return selectionCube;
+	}
+	
+	public Camera getCam()
+	{
+		return cam;
 	}
 
 	@Override

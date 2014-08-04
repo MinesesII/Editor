@@ -27,7 +27,7 @@ public class TheObject extends Node
 				{
 					for (int z = 0; z<8; z++)
 					{
-						model = new Geometry("Cube"+(x+y+z), new Box(0.125f,0.125f,0.125f));
+						model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f));
 						model.setLocalTranslation((0.25f*x)-0.875f,(0.25f*y)-0.875f,(0.25f*z)-0.875f);
 						attachChild(model);
 					}
@@ -38,17 +38,47 @@ public class TheObject extends Node
 			setMaterial(mat);
 		}
 	}
-	
+
 	public void deleteBlock()
 	{
 		for(int i = 0 ; i < getQuantity(); i++)
 		{
-			System.out.println(getChild(i).getLocalTranslation()+""+Main.getEditor().getSelection().getLocalTranslation());
-			if(getChild(i).getLocalTranslation().x==Main.getEditor().getSelection().getLocalTranslation().x && getChild(i).getLocalTranslation().y==Main.getEditor().getSelection().getLocalTranslation().y && getChild(i).getLocalTranslation().z==Main.getEditor().getSelection().getLocalTranslation().z)
+			if(getChild(i).getLocalTranslation().x==Main.getEditor().getSelection().getLocalTranslation().x && 
+					getChild(i).getLocalTranslation().y==Main.getEditor().getSelection().getLocalTranslation().y && 
+					getChild(i).getLocalTranslation().z==Main.getEditor().getSelection().getLocalTranslation().z && 
+					!this.getChild(i).getName().contentEquals("SelectionCube"))
 			{
 				this.detachChildAt(i);
 				return;
 			}
 		}
+	}
+
+	public void addBlock()
+	{
+		if (!isThereACube())
+		{
+			Geometry model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f));
+			Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+			mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Test.png")); 
+			model.setMaterial(mat);
+			attachChild(model);
+			model.setLocalTranslation(Main.getEditor().getSelection().getLocalTranslation());
+		}
+	}
+
+	public boolean isThereACube()
+	{
+		for(int i = 0 ; i < getQuantity(); i++)
+		{
+			if(getChild(i).getLocalTranslation().x==Main.getEditor().getSelection().getLocalTranslation().x && 
+					getChild(i).getLocalTranslation().y==Main.getEditor().getSelection().getLocalTranslation().y && 
+					getChild(i).getLocalTranslation().z==Main.getEditor().getSelection().getLocalTranslation().z && 
+					!this.getChild(i).getName().contentEquals("SelectionCube"))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }
