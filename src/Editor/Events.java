@@ -31,9 +31,8 @@ public class Events implements ActionListener
 		Main.getEditor().getInputManager().addMapping("left", new KeyTrigger(KeyInput.KEY_LEFT));
 		Main.getEditor().getInputManager().addMapping("down", new KeyTrigger(KeyInput.KEY_DOWN));
 		Main.getEditor().getInputManager().addMapping("up", new KeyTrigger(KeyInput.KEY_UP));
-		Main.getEditor().getInputManager().addMapping("suppr", new KeyTrigger(KeyInput.KEY_DELETE));
 		Main.getEditor().getInputManager().addListener(this, "leftclick", "rightclick", "middleclick");
-		Main.getEditor().getInputManager().addListener(this, "down", "up", "right", "left", "suppr", "add");
+		Main.getEditor().getInputManager().addListener(this, "down", "up", "right", "left", "add");
 	}
 
 	@Override
@@ -42,26 +41,6 @@ public class Events implements ActionListener
 		if(name.contentEquals("middleclick"))
 		{
 			leftClicPressed = keyPressed;
-		}
-		else if (name.contentEquals("leftclick"))
-		{
-			if(Main.getEditor().isAdvancedMode())
-			{
-				CollisionResults results = new CollisionResults();
-				Vector2f click2d = Main.getEditor().getInputManager().getCursorPosition();
-				Vector3f click3d = Main.getEditor().getCam().getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 0f).clone();
-				Vector3f dir = Main.getEditor().getCam().getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
-				Ray ray = new Ray(click3d, dir);
-				Main.getEditor().getObject().collideWith(ray, results);
-				if(results.size()!=0 && !results.getCollision(0).getGeometry().getName().contentEquals("SelectionCube"))
-				{
-					Main.getEditor().getSelection().setLocalTranslation(results.getCollision(0).getGeometry().getLocalTranslation());
-				}
-				else if (results.size()>1)
-				{
-					Main.getEditor().getSelection().setLocalTranslation(results.getCollision(1).getGeometry().getLocalTranslation());
-				}
-			}
 		}
 		else if (name.contentEquals("rightclick") && !keyPressed)
 		{
@@ -118,7 +97,7 @@ public class Events implements ActionListener
 				}
 			}
 		}
-		else if (name.contentEquals("suppr") && !keyPressed)
+		else if (name.contentEquals("leftclick") && !keyPressed && Main.getEditor().isAdvancedMode())
 		{
 			Main.getEditor().getObject().deleteBlock();
 		}
