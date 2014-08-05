@@ -1,10 +1,12 @@
 package Editor;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.collision.CollisionResults;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
+import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -91,6 +93,24 @@ public class Main extends SimpleApplication implements ScreenController
 			theObject = new TheObject(2);
 			rootNode.attachChild(theObject);
 		}
+		
+		if(Main.getEditor().isAdvancedMode())
+		{
+			CollisionResults results = new CollisionResults();
+			Vector2f click2d = Main.getEditor().getInputManager().getCursorPosition();
+			Vector3f click3d = Main.getEditor().getCam().getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 0f).clone();
+			Vector3f dir = Main.getEditor().getCam().getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
+			Ray ray = new Ray(click3d, dir);
+			Main.getEditor().getObject().collideWith(ray, results);
+			if(results.size()!=0 && !results.getCollision(0).getGeometry().getName().contentEquals("SelectionCube"))
+			{
+				Main.getEditor().getSelection().setLocalTranslation(results.getCollision(0).getGeometry().getLocalTranslation());
+			}
+			else if (results.size()>1)
+			{
+				Main.getEditor().getSelection().setLocalTranslation(results.getCollision(1).getGeometry().getLocalTranslation());
+			}
+		}
 	}
 
 	private void makeBackground()
@@ -129,26 +149,6 @@ public class Main extends SimpleApplication implements ScreenController
 		theObject.detachChild(selectionCube);
 	}
 
-	public void setSelectionCubeDirection(String direction)
-	{
-		if(direction.contentEquals("up") && selectionCube.getLocalTranslation().y!=0.875)
-		{
-			selectionCube.setLocalTranslation(selectionCube.getLocalTranslation().x,selectionCube.getLocalTranslation().y+0.25f,selectionCube.getLocalTranslation().z);
-		}
-		else if(direction.contentEquals("down") && selectionCube.getLocalTranslation().y!=-0.875)
-		{
-			selectionCube.setLocalTranslation(selectionCube.getLocalTranslation().x,selectionCube.getLocalTranslation().y-0.25f,selectionCube.getLocalTranslation().z);
-		}
-		if(direction.contentEquals("left") && selectionCube.getLocalTranslation().x!=-0.875)
-		{
-			selectionCube.setLocalTranslation(selectionCube.getLocalTranslation().x-0.25f,selectionCube.getLocalTranslation().y,selectionCube.getLocalTranslation().z);
-		}
-		else if(direction.contentEquals("right") && selectionCube.getLocalTranslation().x!=0.875)
-		{
-			selectionCube.setLocalTranslation(selectionCube.getLocalTranslation().x+0.25f,selectionCube.getLocalTranslation().y,selectionCube.getLocalTranslation().z);
-		}
-	}
-
 	//return wherever is the code the main class
 	public static Main getEditor()
 	{
@@ -174,7 +174,7 @@ public class Main extends SimpleApplication implements ScreenController
 	{
 		return selectionCube;
 	}
-	
+
 	public Camera getCam()
 	{
 		return cam;

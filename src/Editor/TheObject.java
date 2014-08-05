@@ -54,30 +54,33 @@ public class TheObject extends Node
 		}
 	}
 
-	public void addBlock()
+	public void addBlock(float x, float y, float z)
 	{
-		if (!isThereACube())
+		if (CanPlaceACube(x,y,z))
 		{
 			Geometry model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f));
 			Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 			mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Test.png")); 
 			model.setMaterial(mat);
 			attachChild(model);
-			model.setLocalTranslation(Main.getEditor().getSelection().getLocalTranslation());
+			model.setLocalTranslation(x,y,z);
 		}
 	}
 
-	public boolean isThereACube()
+	public boolean CanPlaceACube(float x, float y, float z)
 	{
 		for(int i = 0 ; i < getQuantity(); i++)
 		{
-			if(getChild(i).getLocalTranslation().x==Main.getEditor().getSelection().getLocalTranslation().x && 
-					getChild(i).getLocalTranslation().y==Main.getEditor().getSelection().getLocalTranslation().y && 
-					getChild(i).getLocalTranslation().z==Main.getEditor().getSelection().getLocalTranslation().z && 
-					!this.getChild(i).getName().contentEquals("SelectionCube"))
+			if(getChild(i).getLocalTranslation().x==x && 
+					getChild(i).getLocalTranslation().y==y && 
+					getChild(i).getLocalTranslation().z==z)
 			{
-				return true;
+				return false;
 			}
+		}
+		if (x<=0.875 && x>=-0.875 && y<=0.875 && y>=-0.875 && z<=0.875 && z>=-0.875)
+		{
+			return true;
 		}
 		return false;
 	}
