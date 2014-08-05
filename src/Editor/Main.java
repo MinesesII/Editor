@@ -13,7 +13,6 @@ import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Box;
 import com.jme3.ui.Picture;
 
 import de.lessvoid.nifty.Nifty;
@@ -29,7 +28,10 @@ public class Main extends SimpleApplication implements ScreenController
 	private Events events;
 	private GUI gui;
 	private boolean isAdvancedEdit=false;
-	private Geometry selectionCube;
+	private Material mat;
+	private int cubeSelectedBeforeIndex;
+	private Material cubeSelectedBeforeMaterial ;
+
 
 	public static void main(String[] args)
 	{
@@ -49,6 +51,14 @@ public class Main extends SimpleApplication implements ScreenController
 		socle = new Socle();
 		rootNode.attachChild(socle);
 		oldposition = inputManager.getCursorPosition().clone();
+		initMatSelection();
+	}
+
+	private void initMatSelection()
+	{
+		mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+		mat.setColor("Color", new ColorRGBA(1,0,0,0.3f));
+		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
 	}
 
 	@Override
@@ -93,7 +103,7 @@ public class Main extends SimpleApplication implements ScreenController
 			theObject = new TheObject(2);
 			rootNode.attachChild(theObject);
 		}
-		
+
 		if(Main.getEditor().isAdvancedMode())
 		{
 			CollisionResults results = new CollisionResults();
@@ -102,14 +112,7 @@ public class Main extends SimpleApplication implements ScreenController
 			Vector3f dir = Main.getEditor().getCam().getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
 			Ray ray = new Ray(click3d, dir);
 			Main.getEditor().getObject().collideWith(ray, results);
-			if(results.size()!=0 && !results.getCollision(0).getGeometry().getName().contentEquals("SelectionCube"))
-			{
-				Main.getEditor().getSelection().setLocalTranslation(results.getCollision(0).getGeometry().getLocalTranslation());
-			}
-			else if (results.size()>1)
-			{
-				Main.getEditor().getSelection().setLocalTranslation(results.getCollision(1).getGeometry().getLocalTranslation());
-			}
+
 		}
 	}
 
@@ -132,21 +135,12 @@ public class Main extends SimpleApplication implements ScreenController
 		isAdvancedEdit=true;
 		theObject.setLocalRotation(new Quaternion (0,0,0,1));
 		cam.setLocation(new Vector3f(cam.getLocation().x, cam.getLocation().y, cam.getLocation().z-6));
-		selectionCube = new Geometry("SelectionCube", new Box(0.13f, 0.13f, 0.13f));
-		Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", new ColorRGBA(1,0,0,0.3f));
-		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
-		selectionCube.setQueueBucket(Bucket.Translucent); 
-		selectionCube.setMaterial(mat);
-		theObject.attachChild(selectionCube);
-		selectionCube.setLocalTranslation(new Vector3f(-0.875f,-0.875f,0.875f));
 	}
 
 	public void passToNormalEdit()
 	{
 		isAdvancedEdit=false;
 		cam.setLocation(new Vector3f(cam.getLocation().x, cam.getLocation().y, cam.getLocation().z+6));
-		theObject.detachChild(selectionCube);
 	}
 
 	//return wherever is the code the main class
@@ -168,11 +162,6 @@ public class Main extends SimpleApplication implements ScreenController
 	public TheObject getObject()
 	{
 		return theObject;
-	}
-
-	public Geometry getSelection()
-	{
-		return selectionCube;
 	}
 
 	public Camera getCam()

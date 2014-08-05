@@ -39,19 +39,9 @@ public class TheObject extends Node
 		}
 	}
 
-	public void deleteBlock()
+	public void deleteBlock(Geometry cube)
 	{
-		for(int i = 0 ; i < getQuantity(); i++)
-		{
-			if(getChild(i).getLocalTranslation().x==Main.getEditor().getSelection().getLocalTranslation().x && 
-					getChild(i).getLocalTranslation().y==Main.getEditor().getSelection().getLocalTranslation().y && 
-					getChild(i).getLocalTranslation().z==Main.getEditor().getSelection().getLocalTranslation().z && 
-					!this.getChild(i).getName().contentEquals("SelectionCube"))
-			{
-				this.detachChildAt(i);
-				return;
-			}
-		}
+		this.detachChild(cube);
 	}
 
 	public void addBlock(float x, float y, float z)
