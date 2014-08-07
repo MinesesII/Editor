@@ -1,18 +1,12 @@
 package Editor;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.collision.CollisionResults;
 import com.jme3.material.Material;
-import com.jme3.material.RenderState.BlendMode;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
-import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
-import com.jme3.renderer.queue.RenderQueue.Bucket;
-import com.jme3.scene.Geometry;
 import com.jme3.ui.Picture;
 
 import de.lessvoid.nifty.Nifty;
@@ -29,8 +23,6 @@ public class Main extends SimpleApplication implements ScreenController
 	private GUI gui;
 	private boolean isAdvancedEdit=false;
 	private Material mat;
-	private int cubeSelectedBeforeIndex;
-	private Material cubeSelectedBeforeMaterial ;
 
 
 	public static void main(String[] args)
@@ -51,14 +43,7 @@ public class Main extends SimpleApplication implements ScreenController
 		socle = new Socle();
 		rootNode.attachChild(socle);
 		oldposition = inputManager.getCursorPosition().clone();
-		initMatSelection();
-	}
-
-	private void initMatSelection()
-	{
-		mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setColor("Color", new ColorRGBA(1,0,0,0.3f));
-		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+		setMat("Bedrock");
 	}
 
 	@Override
@@ -103,17 +88,6 @@ public class Main extends SimpleApplication implements ScreenController
 			theObject = new TheObject(2);
 			rootNode.attachChild(theObject);
 		}
-
-		if(Main.getEditor().isAdvancedMode())
-		{
-			CollisionResults results = new CollisionResults();
-			Vector2f click2d = Main.getEditor().getInputManager().getCursorPosition();
-			Vector3f click3d = Main.getEditor().getCam().getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 0f).clone();
-			Vector3f dir = Main.getEditor().getCam().getWorldCoordinates(new Vector2f(click2d.x, click2d.y), 1f).subtractLocal(click3d).normalizeLocal();
-			Ray ray = new Ray(click3d, dir);
-			Main.getEditor().getObject().collideWith(ray, results);
-
-		}
 	}
 
 	private void makeBackground()
@@ -142,11 +116,22 @@ public class Main extends SimpleApplication implements ScreenController
 		isAdvancedEdit=false;
 		cam.setLocation(new Vector3f(cam.getLocation().x, cam.getLocation().y, cam.getLocation().z+6));
 	}
+	
+	public void setMat(String texture)
+	{
+		mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");  
+		mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture(texture+".jpg"));
+	}
 
 	//return wherever is the code the main class
 	public static Main getEditor()
 	{
 		return editor;
+	}
+	
+	public Material getMat()
+	{
+		return mat;
 	}
 
 	public GUI getGui() 

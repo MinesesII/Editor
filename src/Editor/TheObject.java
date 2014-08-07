@@ -14,7 +14,7 @@ public class TheObject extends Node
 		{
 			Geometry model = new Geometry("Cube", new Box(1, 1, 1));  
 			Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");  
-			mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Glowstone.png"));
+			mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Dirt.jpg"));
 			model.setMaterial(mat);              
 			attachChild(model);
 		}
@@ -34,7 +34,7 @@ public class TheObject extends Node
 				}
 			}
 			Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-			mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Test.png")); 
+			mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Bedrock.jpg")); 
 			setMaterial(mat);
 		}
 	}
@@ -49,9 +49,7 @@ public class TheObject extends Node
 		if (CanPlaceACube(x,y,z))
 		{
 			Geometry model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f));
-			Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-			mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Test.png")); 
-			model.setMaterial(mat);
+			model.setMaterial(Main.getEditor().getMat());
 			attachChild(model);
 			model.setLocalTranslation(x,y,z);
 		}

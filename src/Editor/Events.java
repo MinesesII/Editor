@@ -116,7 +116,7 @@ public class Events implements ActionListener
 		}
 		else if (name.contentEquals("inventory") && !keyPressed && Main.getEditor().isAdvancedMode())
 		{
-			System.out.println();
+			Main.getEditor().getGui().showPopupInventory();
 		}
 	}
 

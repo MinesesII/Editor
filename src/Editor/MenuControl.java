@@ -40,6 +40,25 @@ implements EventTopicSubscriber<MenuItemActivatedEvent>
 				Main.getEditor().passToNormalEdit();
 			}
 		}
+		if ("normalmod".equals(item.id)) 
+		{
+			if(Main.getEditor().isAdvancedMode())
+			{
+				Main.getEditor().passToNormalEdit();
+			}
+		}
+		if ("stonetexture".equals(item.id)) 
+		{
+			Main.getEditor().setMat("Stone");
+		}
+		if ("dirttexture".equals(item.id)) 
+		{
+			Main.getEditor().setMat("Dirt");
+		}
+		if ("bedrocktexture".equals(item.id)) 
+		{
+			Main.getEditor().setMat("Bedrock");
+		}
 	}
 };
 

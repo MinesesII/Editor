@@ -115,6 +115,24 @@ public class GUI implements ScreenController
 		createPopupMenuEdit() ;
 		nifty.showPopup(nifty.getCurrentScreen(), popup.getId(), null); 
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void createPopupInventory()
+	{
+		popup = nifty.createPopup("niftyPopupMenu");
+		Menu inventory = popup.findNiftyControl("#menu", Menu.class);
+		inventory.setWidth(new SizeValue("140px")); 
+		inventory.addMenuItem("Stone", "Stone.jpg", new menuItem("stonetexture", "Select stone texture"));
+		inventory.addMenuItem("Dirt", "Dirt.jpg", new menuItem("dirttexture", "Select dirt texture"));
+		inventory.addMenuItem("Bedrock", "Bedrock.jpg", new menuItem("bedrocktexture", "Select bedrock texture"));
+		nifty.subscribe(nifty.getCurrentScreen(), inventory.getId(), MenuItemActivatedEvent.class, new MenuControl());
+	}
+
+	public void showPopupInventory() 
+	{ 
+		createPopupInventory() ;
+		nifty.showPopup(nifty.getCurrentScreen(), popup.getId(), null); 
+	}
 
 	class menuItem 
 	{

@@ -15,7 +15,7 @@ public class Socle extends Node
 		Geometry base1 = new Geometry("Box", new Box((float)0.2,(float) 1, (float)0.2));  
 		Geometry base2 = new Geometry("Box", new Box((float)0.5,(float) 0.1, (float)0.5));  
 		Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Socle.png"));
+		mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Stone.jpg"));
 		base.setMaterial(mat); 
 		base1.setMaterial(mat);  
 		base2.setMaterial(mat); 
