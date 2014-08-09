@@ -8,8 +8,11 @@ import com.jme3.scene.shape.Box;
 public class TheObject extends Node
 {
 
+	private int types;
+
 	public TheObject(int type)
 	{
+		types=type;
 		if(type == 1)
 		{
 			Geometry model = new Geometry("Cube", new Box(1, 1, 1));  
@@ -18,7 +21,7 @@ public class TheObject extends Node
 			model.setMaterial(mat);              
 			attachChild(model);
 		}
-		else
+		else if (type == 2)
 		{
 			Geometry model;
 			for (int x = 0; x<8; x++)
@@ -37,7 +40,17 @@ public class TheObject extends Node
 			mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Bedrock.jpg")); 
 			setMaterial(mat);
 		}
+		else
+		{
+			Geometry model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f));
+			model.setLocalTranslation(-0.875f,-0.875f,-0.875f);
+			attachChild(model);
+		}
+		Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+		mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Bedrock.jpg")); 
+		setMaterial(mat);
 	}
+
 
 	public void deleteBlock(Geometry cube)
 	{
@@ -71,5 +84,10 @@ public class TheObject extends Node
 			return true;
 		}
 		return false;
+	}
+
+	public int getType()
+	{
+		return types;
 	}
 }

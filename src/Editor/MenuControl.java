@@ -20,24 +20,25 @@ implements EventTopicSubscriber<MenuItemActivatedEvent>
 		}
 		if ("newSimpleBlock".equals(item.id)) 
 		{
-			Main.getEditor().getGui().createDefaultObject();
+			Main.getEditor().createDefaultObject();;
 		}
 		if ("newComplexeBlock".equals(item.id)) 
 		{
-			Main.getEditor().getGui().createComplexeObject();
+			Main.getEditor().getGui().showMenuCreateBlockFrom();
+		}
+		if ("fromNothing".equals(item.id)) 
+		{
+			Main.getEditor().createComplexeObject(3);
+		}
+		if ("fromFullBlock".equals(item.id)) 
+		{
+			Main.getEditor().createComplexeObject(2);
 		}
 		if ("advancemod".equals(item.id)) 
 		{
-			if(!Main.getEditor().isAdvancedMode() && Main.getEditor().getObject()!=null)
+			if(!Main.getEditor().isAdvancedMode() && Main.getEditor().getObject()!=null && (Main.getEditor().getObject().getType()==2 || Main.getEditor().getObject().getType()==3))
 			{
 				Main.getEditor().passToAdvancedEdit();
-			}
-		}
-		if ("normalmod".equals(item.id)) 
-		{
-			if(Main.getEditor().isAdvancedMode())
-			{
-				Main.getEditor().passToNormalEdit();
 			}
 		}
 		if ("normalmod".equals(item.id)) 

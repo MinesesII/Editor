@@ -26,37 +26,6 @@ public class GUI implements ScreenController
 		Main.getEditor().getGuiViewPort().addProcessor(niftyDisplay);
 	}
 
-
-	public void createDefaultObject()
-	{
-		createDefaultObject = true;
-	}
-
-	public boolean isCreatingDefaultObject()
-	{
-		if(createDefaultObject)
-		{
-			createDefaultObject = false;
-			return true;
-		}
-		return false;
-	}
-
-	public void createComplexeObject()
-	{
-		createComplexeObject = true;
-	}
-
-	public boolean isCreatingComplexeObject()
-	{
-		if(createComplexeObject)
-		{
-			createComplexeObject = false;
-			return true;
-		}
-		return false;
-	}
-
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void createPopupMenuCreate()
 	{
@@ -90,6 +59,22 @@ public class GUI implements ScreenController
 	public void showMenuCreateBlock() 
 	{ 
 		createPopupMenuCreateBlock() ;
+		nifty.showPopup(nifty.getCurrentScreen(), popup.getId(), null); 
+	}
+	
+	public void createPopupMenuCreateBlockFrom()
+	{
+		popup = nifty.createPopup("niftyPopupMenu");
+		Menu menucreate = popup.findNiftyControl("#menu", Menu.class);
+		menucreate.setWidth(new SizeValue("140px")); 
+		menucreate.addMenuItem("From nothing", "Arrow.png", new menuItem("fromNothing", "From nothing"));
+		menucreate.addMenuItem("From a full block", "Arrow.png", new menuItem("fromFullBlock", "From full block"));
+		nifty.subscribe(nifty.getCurrentScreen(), menucreate.getId(), MenuItemActivatedEvent.class, new MenuControl());
+	}
+
+	public void showMenuCreateBlockFrom() 
+	{ 
+		createPopupMenuCreateBlockFrom() ;
 		nifty.showPopup(nifty.getCurrentScreen(), popup.getId(), null); 
 	}
 

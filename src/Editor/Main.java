@@ -76,18 +76,27 @@ public class Main extends SimpleApplication implements ScreenController
 		{
 			inputManager.setCursorVisible(true);
 		}
-
-		if(getGui().isCreatingDefaultObject() && theObject == null)
-		{		
-			theObject = new TheObject(1);
-			rootNode.attachChild(theObject);
+	}
+	
+	public void createDefaultObject()
+	{
+		if(theObject!=null)
+		{
+			theObject.detachAllChildren();
 		}
+		theObject = new TheObject(1);
+		rootNode.attachChild(theObject);
+	}
 
-		if(getGui().isCreatingComplexeObject() && theObject == null)
-		{		
-			theObject = new TheObject(2);
-			rootNode.attachChild(theObject);
+	public void createComplexeObject(int type)
+	{
+		if(theObject!=null)
+		{
+			theObject.detachAllChildren();
 		}
+		theObject = new TheObject(type);
+		rootNode.attachChild(theObject);
+
 	}
 
 	private void makeBackground()
@@ -116,7 +125,7 @@ public class Main extends SimpleApplication implements ScreenController
 		isAdvancedEdit=false;
 		cam.setLocation(new Vector3f(cam.getLocation().x, cam.getLocation().y, cam.getLocation().z+6));
 	}
-	
+
 	public void setMat(String texture)
 	{
 		mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");  
@@ -128,7 +137,7 @@ public class Main extends SimpleApplication implements ScreenController
 	{
 		return editor;
 	}
-	
+
 	public Material getMat()
 	{
 		return mat;
