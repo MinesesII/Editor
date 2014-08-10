@@ -1,7 +1,11 @@
 package Editor;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.material.Material;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Vector2f;
+import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.ui.Picture;
 
@@ -17,6 +21,10 @@ public class Main extends SimpleApplication implements ScreenController
 	private Socle socle;
 	private Events events;
 	private GUI gui;
+	private boolean isAdvancedEdit=false;
+	private Material mat;
+	private String texture;
+
 
 	public static void main(String[] args)
 	{
@@ -29,24 +37,23 @@ public class Main extends SimpleApplication implements ScreenController
 	public void simpleInitApp() 
 	{
 		editor = this;
-		this.flyCam.setEnabled(false);
-		
+		flyCam.setEnabled(false);
 		makeBackground();
-		
 		events = new Events();
 		gui = new GUI();
 		socle = new Socle();
 		rootNode.attachChild(socle);
 		oldposition = inputManager.getCursorPosition().clone();
+		setMat("Bedrock");
 	}
-	
+
 	@Override
 	public void simpleUpdate(float tpf) 
 	{
 		if(events.isLeftClicPressed() && theObject != null)
 		{
 			inputManager.setCursorVisible(false);
-			
+
 			Vector2f newposition = Main.getEditor().getInputManager().getCursorPosition();
 			if(newposition.getX()<oldposition.getX())
 			{
@@ -56,11 +63,11 @@ public class Main extends SimpleApplication implements ScreenController
 			{
 				theObject.rotate(0,(float)0.03, 0);
 			}
-			if(newposition.getY()<oldposition.getY())
+			if(newposition.getY()<oldposition.getY()  && !isAdvancedEdit)
 			{
 				theObject.rotate((float)0.03, 0, 0);
 			}
-			else if(newposition.getY()>oldposition.getY())
+			else if(newposition.getY()>oldposition.getY()  && !isAdvancedEdit)
 			{
 				theObject.rotate((float)-0.03, 0, 0);
 			}		
@@ -70,12 +77,27 @@ public class Main extends SimpleApplication implements ScreenController
 		{
 			inputManager.setCursorVisible(true);
 		}
-		
-		if(getGui().isCreatingDefaultObject() && theObject == null)
-		{		
-			theObject = new TheObject();
-			rootNode.attachChild(theObject);
+	}
+	
+	public void createDefaultObject()
+	{
+		if(theObject!=null)
+		{
+			theObject.detachAllChildren();
 		}
+		theObject = new TheObject(1);
+		rootNode.attachChild(theObject);
+	}
+
+	public void createComplexeObject(int type)
+	{
+		if(theObject!=null)
+		{
+			theObject.detachAllChildren();
+		}
+		theObject = new TheObject(type);
+		rootNode.attachChild(theObject);
+
 	}
 
 	private void makeBackground()
@@ -92,15 +114,70 @@ public class Main extends SimpleApplication implements ScreenController
 		viewPort.setClearFlags(false, true, true);
 	}
 
+	public void passToAdvancedEdit()
+	{
+		isAdvancedEdit=true;
+		theObject.setLocalRotation(new Quaternion (0,0,0,1));
+		cam.setLocation(new Vector3f(cam.getLocation().x, cam.getLocation().y, cam.getLocation().z-6));
+	}
+
+	public void passToNormalEdit()
+	{
+		isAdvancedEdit=false;
+		cam.setLocation(new Vector3f(cam.getLocation().x, cam.getLocation().y, cam.getLocation().z+6));
+	}
+
+	public void setMat(String tex)
+	{
+		mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");  
+		mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture(tex+".jpg"));
+		texture = tex+".jpg";
+	}
+	
+	public void createImportObject(TheObject object)
+	{
+		if(theObject!=null)
+		{
+			theObject.detachAllChildren();
+		}
+		theObject = object;
+		rootNode.attachChild(theObject);
+	}
+
 	//return wherever is the code the main class
 	public static Main getEditor()
 	{
 		return editor;
 	}
-	
+
+	public Material getMat()
+	{
+		return mat;
+	}
+
 	public GUI getGui() 
 	{
 		return gui;
+	}
+
+	public boolean isAdvancedMode() 
+	{
+		return isAdvancedEdit;
+	}
+
+	public TheObject getObject()
+	{
+		return theObject;
+	}
+
+	public Camera getCam()
+	{
+		return cam;
+	}
+	
+	public String getTexture()
+	{
+		return texture;
 	}
 
 	@Override
