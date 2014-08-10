@@ -14,10 +14,6 @@ public class GUI implements ScreenController
 {
 	private Element popup;
 	public Nifty nifty;
-	private boolean createDefaultObject = false;
-	private boolean createComplexeObject = false;
-
-
 	public GUI()
 	{	
 		NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(Main.getEditor().getAssetManager(), Main.getEditor().getInputManager(), Main.getEditor().getAudioRenderer(), Main.getEditor().getGuiViewPort());
@@ -61,7 +57,8 @@ public class GUI implements ScreenController
 		createPopupMenuCreateBlock() ;
 		nifty.showPopup(nifty.getCurrentScreen(), popup.getId(), null); 
 	}
-	
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void createPopupMenuCreateBlockFrom()
 	{
 		popup = nifty.createPopup("niftyPopupMenu");
@@ -100,7 +97,7 @@ public class GUI implements ScreenController
 		createPopupMenuEdit() ;
 		nifty.showPopup(nifty.getCurrentScreen(), popup.getId(), null); 
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void createPopupInventory()
 	{
@@ -117,6 +114,21 @@ public class GUI implements ScreenController
 	{ 
 		createPopupInventory() ;
 		nifty.showPopup(nifty.getCurrentScreen(), popup.getId(), null); 
+	}
+
+	public void export() 
+	{ 
+		if(Main.getEditor().getObject()!=null)
+		{
+			BlockFile export = new BlockFile();
+			export.exportObject();
+		}
+	}
+
+	public void Import() 
+	{ 
+		BlockFile Import = new BlockFile();
+		Import.importObject();
 	}
 
 	class menuItem 

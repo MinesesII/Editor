@@ -1,21 +1,25 @@
 package Editor;
 
+import java.io.Serializable;
+
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-import com.jme3.scene.shape.Box;
 
-public class TheObject extends Node
+@SuppressWarnings("serial")
+public class TheObject extends Node implements Serializable
 {
-
 	private int types;
-
+	private Box[] boxlist;
+	
 	public TheObject(int type)
 	{
 		types=type;
 		if(type == 1)
 		{
-			Geometry model = new Geometry("Cube", new Box(1, 1, 1));  
+			boxlist = new Box[1];
+			Geometry model = new Geometry("Cube", new Box(1, 1, 1, 0,0,0,"Dirt.jpg"));  
+			boxlist[0]= new Box(1, 1, 1,0,0,0,"Dirt.jpg");
 			Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");  
 			mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Dirt.jpg"));
 			model.setMaterial(mat);              
@@ -23,16 +27,20 @@ public class TheObject extends Node
 		}
 		else if (type == 2)
 		{
+			boxlist = new Box[512];
 			Geometry model;
+			int count = 0;
 			for (int x = 0; x<8; x++)
 			{
 				for (int y = 0; y<8; y++)
 				{
 					for (int z = 0; z<8; z++)
 					{
-						model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f));
+						model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f,(0.25f*x)-0.875f,(0.25f*y)-0.875f,(0.25f*z)-0.875f, "Bedrock.jpg"));
 						model.setLocalTranslation((0.25f*x)-0.875f,(0.25f*y)-0.875f,(0.25f*z)-0.875f);
+						boxlist[count]= new Box(0.125f,0.125f,0.125f,(0.25f*x)-0.875f,(0.25f*y)-0.875f,(0.25f*z)-0.875f, "Bedrock.jpg");
 						attachChild(model);
+						count++;
 					}
 				}
 			}
@@ -42,13 +50,16 @@ public class TheObject extends Node
 		}
 		else
 		{
-			Geometry model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f));
+			boxlist = new Box[512];
+			Geometry model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f,-0.875f,-0.875f,-0.875f, "Bedrock.jpg"));
+			boxlist[0]=new Box(0.125f,0.125f,0.125f,-0.875f,-0.875f,-0.875f, "Bedrock.jpg");
 			model.setLocalTranslation(-0.875f,-0.875f,-0.875f);
 			attachChild(model);
+			Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+			mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Bedrock.jpg")); 
+			model.setMaterial(mat);
+			type = 2;
 		}
-		Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-		mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Bedrock.jpg")); 
-		setMaterial(mat);
 	}
 
 
@@ -61,7 +72,7 @@ public class TheObject extends Node
 	{
 		if (CanPlaceACube(x,y,z))
 		{
-			Geometry model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f));
+			Geometry model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f,x,y,z,Main.getEditor().getTexture()));
 			model.setMaterial(Main.getEditor().getMat());
 			attachChild(model);
 			model.setLocalTranslation(x,y,z);
@@ -89,5 +100,10 @@ public class TheObject extends Node
 	public int getType()
 	{
 		return types;
+	}
+	
+	public Box[] getBoxList()
+	{
+		return boxlist;
 	}
 }

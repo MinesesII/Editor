@@ -17,6 +17,14 @@
 					align="left" valign="center" visibleToMouse="true">
 					<interact onClick="showMenuEdit()" />
 				</control>
+				<control name="button" label="Export" id="ExportButton"
+					align="left" valign="center" visibleToMouse="true">
+					<interact onClick="export()" />
+				</control>
+				<control name="button" label="Import" id="ImportButton"
+					align="left" valign="center" visibleToMouse="true">
+					<interact onClick="Import()" />
+				</control>
 			</panel>
 		</layer>
 	</screen>

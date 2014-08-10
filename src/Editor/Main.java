@@ -23,6 +23,7 @@ public class Main extends SimpleApplication implements ScreenController
 	private GUI gui;
 	private boolean isAdvancedEdit=false;
 	private Material mat;
+	private String texture;
 
 
 	public static void main(String[] args)
@@ -130,6 +131,17 @@ public class Main extends SimpleApplication implements ScreenController
 	{
 		mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");  
 		mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture(texture+".jpg"));
+		texture = texture+"jpg";
+	}
+	
+	public void createImportObject(TheObject object)
+	{
+		if(theObject!=null)
+		{
+			theObject.detachAllChildren();
+		}
+		theObject = object;
+		rootNode.attachChild(theObject);
 	}
 
 	//return wherever is the code the main class
@@ -161,6 +173,11 @@ public class Main extends SimpleApplication implements ScreenController
 	public Camera getCam()
 	{
 		return cam;
+	}
+	
+	public String getTexture()
+	{
+		return texture;
 	}
 
 	@Override
