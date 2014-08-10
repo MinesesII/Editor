@@ -10,6 +10,9 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.ui.Picture;
 
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.TextField;
+import de.lessvoid.nifty.elements.Element;
+import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
@@ -85,7 +88,11 @@ public class Main extends SimpleApplication implements ScreenController
 		{
 			theObject.detachAllChildren();
 		}
-		theObject = new TheObject(1);
+		if(isAdvancedEdit)
+		{
+			passToNormalEdit();
+		}
+		theObject = new TheObject(1,"test");
 		rootNode.attachChild(theObject);
 	}
 
@@ -95,7 +102,7 @@ public class Main extends SimpleApplication implements ScreenController
 		{
 			theObject.detachAllChildren();
 		}
-		theObject = new TheObject(type);
+		theObject = new TheObject(type,"test2");
 		rootNode.attachChild(theObject);
 
 	}
@@ -144,7 +151,6 @@ public class Main extends SimpleApplication implements ScreenController
 		rootNode.attachChild(theObject);
 	}
 
-	//return wherever is the code the main class
 	public static Main getEditor()
 	{
 		return editor;

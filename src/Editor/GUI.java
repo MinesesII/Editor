@@ -1,6 +1,17 @@
 package Editor;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+import javafx.scene.control.MenuItem;
+
+import com.jme3.material.Material;
 import com.jme3.niftygui.NiftyJmeDisplay;
+import com.jme3.scene.Geometry;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Menu;
@@ -125,35 +136,47 @@ public class GUI implements ScreenController
 		}
 	}
 
-	public void Import() 
+	public void showMenuImport() 
 	{ 
-		BlockFile Import = new BlockFile();
-		Import.importObject();
+		createPopupMenuImport() ;
+		nifty.showPopup(nifty.getCurrentScreen(), popup.getId(), null); 
 	}
 
-	class menuItem 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void createPopupMenuImport()
 	{
-		public String id;
-		public String name;
-		public menuItem(String id, String name)
-		{
-			this.id= id;
-			this.name = name;
-		}
+		popup = nifty.createPopup("niftyPopupMenu");
+		Menu imported = popup.findNiftyControl("#menu", Menu.class);
+		imported.setWidth(new SizeValue("140px")); 
+		nifty.subscribe(nifty.getCurrentScreen(), imported.getId(), MenuItemActivatedEvent.class, new MenuControl());
 	}
 
 	@Override
-	public void bind(Nifty arg0, Screen arg1) 
-	{		
+	public void bind(Nifty arg0, Screen arg1) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
-	public void onEndScreen() 
-	{		
+	public void onEndScreen() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
-	public void onStartScreen() 
+	public void onStartScreen() {
+		// TODO Auto-generated method stub
+
+	}
+}
+
+class menuItem 
+{
+	public String id;
+	public String name;
+	public menuItem(String id, String name)
 	{
+		this.id= id;
+		this.name = name;
 	}
 }

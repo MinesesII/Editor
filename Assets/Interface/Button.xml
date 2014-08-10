@@ -23,9 +23,9 @@
 				</control>
 				<control name="button" label="Import" id="ImportButton"
 					align="left" valign="center" visibleToMouse="true">
-					<interact onClick="Import()" />
+					<interact onClick="showMenuImport()" />
 				</control>
-			</panel>
+				</panel>
 		</layer>
 	</screen>
 </nifty>

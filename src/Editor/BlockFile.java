@@ -17,12 +17,18 @@ import com.jme3.scene.Geometry;
 
 public class BlockFile 
 {
+	ObjectOutputStream oos;
+	ObjectInputStream ois;
+
 	public void exportObject()
 	{
-		ObjectOutputStream oos;
+		
+		
 		try 
 		{
-			oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(new File("Blocks.txt"))));
+			File file = new File(getClass().getProtectionDomain().getCodeSource().getLocation().getFile()+"../Assets/Blocks");
+			file.mkdirs();
+			oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(new File("Assets/Blocks/Blocks.txt"))));
 			oos.writeObject(Main.getEditor().getObject());
 			oos.close();
 		} 
@@ -38,7 +44,6 @@ public class BlockFile
 
 	public void importObject()
 	{
-		ObjectInputStream ois;
 		try 
 		{
 			ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(new File("Blocks.txt"))));

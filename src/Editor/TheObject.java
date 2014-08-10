@@ -11,10 +11,12 @@ public class TheObject extends Node implements Serializable
 {
 	private int types;
 	private Box[] boxlist;
+	private String name;
 	
-	public TheObject(int type)
+	public TheObject(int type, String Name)
 	{
 		types=type;
+		name=Name;
 		if(type == 1)
 		{
 			boxlist = new Box[1];
@@ -107,5 +109,10 @@ public class TheObject extends Node implements Serializable
 	public Box[] getBoxList()
 	{
 		return boxlist;
+	}
+	
+	public String getName()
+	{
+		return name;
 	}
 }
