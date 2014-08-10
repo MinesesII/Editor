@@ -35,7 +35,7 @@ public class BlockFile
 			e.printStackTrace();
 		}     	
 	}
-	
+
 	public void importObject()
 	{
 		ObjectInputStream ois;
@@ -48,7 +48,7 @@ public class BlockFile
 				TheObject theobject = (TheObject)ois.readObject();
 				if(theobject.getType()==1)
 				{
-					Geometry model = new Geometry("Cube", new Box(theobject.getBoxList()[0].getSizeX(),
+					Geometry model = new Geometry("0", new Box(theobject.getBoxList()[0].getSizeX(),
 							theobject.getBoxList()[0].getSizeY(),
 							theobject.getBoxList()[0].getSizeZ(),
 							theobject.getBoxList()[0].getPosX(),
@@ -69,24 +69,27 @@ public class BlockFile
 						{
 							for (int z = 0; z<8; z++)
 							{
-								Geometry model = new Geometry("Cube", new Box(theobject.getBoxList()[count].getSizeX(),
-										theobject.getBoxList()[count].getSizeY(),
-										theobject.getBoxList()[count].getSizeZ(),
-										theobject.getBoxList()[count].getPosX(),
-										theobject.getBoxList()[count].getPosY(),
-										theobject.getBoxList()[count].getPosZ(),
-										theobject.getBoxList()[count].getTextureName())); 
-								model.setLocalTranslation(theobject.getBoxList()[count].getPosX(),theobject.getBoxList()[count].getPosY(),theobject.getBoxList()[count].getPosZ());
-								Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");  
-								mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture(theobject.getBoxList()[count].getTextureName()));
-								model.setMaterial(mat);
-								theobject.attachChild(model);
+								if(theobject.getBoxList()[count]!=null)
+								{
+									Geometry model = new Geometry(Integer.toString(count), new Box(theobject.getBoxList()[count].getSizeX(),
+											theobject.getBoxList()[count].getSizeY(),
+											theobject.getBoxList()[count].getSizeZ(),
+											theobject.getBoxList()[count].getPosX(),
+											theobject.getBoxList()[count].getPosY(),
+											theobject.getBoxList()[count].getPosZ(),
+											theobject.getBoxList()[count].getTextureName())); 
+									model.setLocalTranslation(theobject.getBoxList()[count].getPosX(),theobject.getBoxList()[count].getPosY(),theobject.getBoxList()[count].getPosZ());
+									Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");  
+									mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture(theobject.getBoxList()[count].getTextureName()));
+									model.setMaterial(mat);
+									theobject.attachChild(model);
+								}
 								count++;
 							}
 						}
 					}
 				}
-				
+
 				Main.getEditor().createImportObject(theobject);
 			} 
 			catch (ClassNotFoundException e) 

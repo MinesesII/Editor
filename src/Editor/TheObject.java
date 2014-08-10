@@ -18,7 +18,7 @@ public class TheObject extends Node implements Serializable
 		if(type == 1)
 		{
 			boxlist = new Box[1];
-			Geometry model = new Geometry("Cube", new Box(1, 1, 1, 0,0,0,"Dirt.jpg"));  
+			Geometry model = new Geometry("0", new Box(1, 1, 1, 0,0,0,"Dirt.jpg"));  
 			boxlist[0]= new Box(1, 1, 1,0,0,0,"Dirt.jpg");
 			Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");  
 			mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Dirt.jpg"));
@@ -36,7 +36,7 @@ public class TheObject extends Node implements Serializable
 				{
 					for (int z = 0; z<8; z++)
 					{
-						model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f,(0.25f*x)-0.875f,(0.25f*y)-0.875f,(0.25f*z)-0.875f, "Bedrock.jpg"));
+						model = new Geometry(Integer.toString(count), new Box(0.125f,0.125f,0.125f,(0.25f*x)-0.875f,(0.25f*y)-0.875f,(0.25f*z)-0.875f, "Bedrock.jpg"));
 						model.setLocalTranslation((0.25f*x)-0.875f,(0.25f*y)-0.875f,(0.25f*z)-0.875f);
 						boxlist[count]= new Box(0.125f,0.125f,0.125f,(0.25f*x)-0.875f,(0.25f*y)-0.875f,(0.25f*z)-0.875f, "Bedrock.jpg");
 						attachChild(model);
@@ -51,7 +51,7 @@ public class TheObject extends Node implements Serializable
 		else
 		{
 			boxlist = new Box[512];
-			Geometry model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f,-0.875f,-0.875f,-0.875f, "Bedrock.jpg"));
+			Geometry model = new Geometry("0", new Box(0.125f,0.125f,0.125f,-0.875f,-0.875f,-0.875f, "Bedrock.jpg"));
 			boxlist[0]=new Box(0.125f,0.125f,0.125f,-0.875f,-0.875f,-0.875f, "Bedrock.jpg");
 			model.setLocalTranslation(-0.875f,-0.875f,-0.875f);
 			attachChild(model);
@@ -66,13 +66,15 @@ public class TheObject extends Node implements Serializable
 	public void deleteBlock(Geometry cube)
 	{
 		this.detachChild(cube);
+		boxlist[Integer.parseInt(cube.getName())]=null;
 	}
 
 	public void addBlock(float x, float y, float z)
 	{
 		if (CanPlaceACube(x,y,z))
 		{
-			Geometry model = new Geometry("Cube", new Box(0.125f,0.125f,0.125f,x,y,z,Main.getEditor().getTexture()));
+			Geometry model = new Geometry(Integer.toString((int)(((z+0.875f)/0.25f)+((y+0.875f)/0.25f)*8+((x+0.875f)/0.25f)*8*8)), new Box(0.125f,0.125f,0.125f,x,y,z,Main.getEditor().getTexture()));
+			boxlist[Integer.parseInt(model.getName())]=new Box(0.125f,0.125f,0.125f,x,y,z,Main.getEditor().getTexture());
 			model.setMaterial(Main.getEditor().getMat());
 			attachChild(model);
 			model.setLocalTranslation(x,y,z);

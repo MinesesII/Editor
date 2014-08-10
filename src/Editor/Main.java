@@ -127,11 +127,11 @@ public class Main extends SimpleApplication implements ScreenController
 		cam.setLocation(new Vector3f(cam.getLocation().x, cam.getLocation().y, cam.getLocation().z+6));
 	}
 
-	public void setMat(String texture)
+	public void setMat(String tex)
 	{
 		mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");  
-		mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture(texture+".jpg"));
-		texture = texture+"jpg";
+		mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture(tex+".jpg"));
+		texture = tex+".jpg";
 	}
 	
 	public void createImportObject(TheObject object)
