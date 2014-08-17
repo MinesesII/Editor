@@ -1,5 +1,9 @@
 package Editor;
 
+import java.awt.FileDialog;
+
+import javax.swing.JFrame;
+
 import com.jme3.app.SimpleApplication;
 import com.jme3.material.Material;
 import com.jme3.math.Quaternion;
@@ -10,9 +14,6 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.ui.Picture;
 
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.TextField;
-import de.lessvoid.nifty.elements.Element;
-import de.lessvoid.nifty.elements.render.TextRenderer;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 
@@ -27,6 +28,7 @@ public class Main extends SimpleApplication implements ScreenController
 	private boolean isAdvancedEdit=false;
 	private Material mat;
 	private String texture;
+    private static JFrame frame = new JFrame();
 
 
 	public static void main(String[] args)
@@ -150,6 +152,30 @@ public class Main extends SimpleApplication implements ScreenController
 		theObject = object;
 		rootNode.attachChild(theObject);
 	}
+	
+    public static String SaveFromFile(String _title, String _path, String _fileFilter) 
+    {    
+        FileDialog fileDialog = new FileDialog(frame, _title, FileDialog.SAVE);
+        fileDialog.setFile(_fileFilter);
+        fileDialog.setDirectory(_path);
+        fileDialog.setLocation(50, 50);
+        fileDialog.setDirectory(_path);
+        fileDialog.setVisible(true);
+        new BlockFile().exportObject(fileDialog.getDirectory(), fileDialog.getFile());
+        return fileDialog.getDirectory() + fileDialog.getFile();
+    }
+    
+    public static String loadFromFile(String _title, String _path, String _fileFilter) 
+    {    
+        FileDialog fileDialog = new FileDialog(frame, _title, FileDialog.LOAD);
+        fileDialog.setFile(_fileFilter);
+        fileDialog.setDirectory(_path);
+        fileDialog.setLocation(50, 50);
+        fileDialog.setDirectory(_path);
+        fileDialog.setVisible(true);
+        new BlockFile().importObject(fileDialog.getDirectory(), fileDialog.getFile());
+        return fileDialog.getDirectory() + fileDialog.getFile();
+    }
 
 	public static Main getEditor()
 	{

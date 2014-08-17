@@ -5,13 +5,13 @@ import java.io.Serializable;
 import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.shape.Box;
 
 @SuppressWarnings("serial")
 public class TheObject extends Node implements Serializable
 {
 	private int types;
-	private Box[] boxlist;
-	private String name;
+	private String[] textureslist;
 	
 	public TheObject(int type, String Name)
 	{
@@ -19,9 +19,9 @@ public class TheObject extends Node implements Serializable
 		name=Name;
 		if(type == 1)
 		{
-			boxlist = new Box[1];
-			Geometry model = new Geometry("0", new Box(1, 1, 1, 0,0,0,"Dirt.jpg"));  
-			boxlist[0]= new Box(1, 1, 1,0,0,0,"Dirt.jpg");
+			textureslist = new String[1];
+			Geometry model = new Geometry("0", new Box(1, 1, 1));  
+			textureslist[0]= "Dirt.jpg";
 			Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");  
 			mat.setTexture("ColorMap", Main.getEditor().getAssetManager().loadTexture("Dirt.jpg"));
 			model.setMaterial(mat);              
@@ -29,7 +29,7 @@ public class TheObject extends Node implements Serializable
 		}
 		else if (type == 2)
 		{
-			boxlist = new Box[512];
+			textureslist = new String[512];
 			Geometry model;
 			int count = 0;
 			for (int x = 0; x<8; x++)
@@ -38,9 +38,9 @@ public class TheObject extends Node implements Serializable
 				{
 					for (int z = 0; z<8; z++)
 					{
-						model = new Geometry(Integer.toString(count), new Box(0.125f,0.125f,0.125f,(0.25f*x)-0.875f,(0.25f*y)-0.875f,(0.25f*z)-0.875f, "Bedrock.jpg"));
+						model = new Geometry(Integer.toString(count), new Box(0.125f,0.125f,0.125f));
 						model.setLocalTranslation((0.25f*x)-0.875f,(0.25f*y)-0.875f,(0.25f*z)-0.875f);
-						boxlist[count]= new Box(0.125f,0.125f,0.125f,(0.25f*x)-0.875f,(0.25f*y)-0.875f,(0.25f*z)-0.875f, "Bedrock.jpg");
+						textureslist[count]= "Bedrock.jpg";
 						attachChild(model);
 						count++;
 					}
@@ -52,9 +52,9 @@ public class TheObject extends Node implements Serializable
 		}
 		else
 		{
-			boxlist = new Box[512];
-			Geometry model = new Geometry("0", new Box(0.125f,0.125f,0.125f,-0.875f,-0.875f,-0.875f, "Bedrock.jpg"));
-			boxlist[0]=new Box(0.125f,0.125f,0.125f,-0.875f,-0.875f,-0.875f, "Bedrock.jpg");
+			textureslist = new String[512];
+			Geometry model = new Geometry("0", new Box(0.125f,0.125f,0.125f));
+			textureslist[0]="Bedrock.jpg";
 			model.setLocalTranslation(-0.875f,-0.875f,-0.875f);
 			attachChild(model);
 			Material mat = new Material(Main.getEditor().getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
@@ -68,15 +68,15 @@ public class TheObject extends Node implements Serializable
 	public void deleteBlock(Geometry cube)
 	{
 		this.detachChild(cube);
-		boxlist[Integer.parseInt(cube.getName())]=null;
+		textureslist[Integer.parseInt(cube.getName())]=null;
 	}
 
 	public void addBlock(float x, float y, float z)
 	{
 		if (CanPlaceACube(x,y,z))
 		{
-			Geometry model = new Geometry(Integer.toString((int)(((z+0.875f)/0.25f)+((y+0.875f)/0.25f)*8+((x+0.875f)/0.25f)*8*8)), new Box(0.125f,0.125f,0.125f,x,y,z,Main.getEditor().getTexture()));
-			boxlist[Integer.parseInt(model.getName())]=new Box(0.125f,0.125f,0.125f,x,y,z,Main.getEditor().getTexture());
+			Geometry model = new Geometry(Integer.toString((int)(((z+0.875f)/0.25f)+((y+0.875f)/0.25f)*8+((x+0.875f)/0.25f)*8*8)), new Box(0.125f,0.125f,0.125f));
+			textureslist[Integer.parseInt(model.getName())]=Main.getEditor().getTexture();
 			model.setMaterial(Main.getEditor().getMat());
 			attachChild(model);
 			model.setLocalTranslation(x,y,z);
@@ -106,9 +106,9 @@ public class TheObject extends Node implements Serializable
 		return types;
 	}
 	
-	public Box[] getBoxList()
+	public String[] getTexturesList()
 	{
-		return boxlist;
+		return textureslist;
 	}
 	
 	public String getName()

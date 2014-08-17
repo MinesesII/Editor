@@ -23,7 +23,7 @@
 				</control>
 				<control name="button" label="Import" id="ImportButton"
 					align="left" valign="center" visibleToMouse="true">
-					<interact onClick="showMenuImport()" />
+					<interact onClick="Import()" />
 				</control>
 				</panel>
 		</layer>

@@ -1,17 +1,6 @@
 package Editor;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-
-import javafx.scene.control.MenuItem;
-
-import com.jme3.material.Material;
 import com.jme3.niftygui.NiftyJmeDisplay;
-import com.jme3.scene.Geometry;
 
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.Menu;
@@ -127,28 +116,19 @@ public class GUI implements ScreenController
 		nifty.showPopup(nifty.getCurrentScreen(), popup.getId(), null); 
 	}
 
+	@SuppressWarnings("static-access")
 	public void export() 
 	{ 
 		if(Main.getEditor().getObject()!=null)
 		{
-			BlockFile export = new BlockFile();
-			export.exportObject();
+			Main.getEditor().SaveFromFile("Export new block", "", "");
 		}
 	}
-
-	public void showMenuImport() 
+	
+	@SuppressWarnings("static-access")
+	public void Import() 
 	{ 
-		createPopupMenuImport() ;
-		nifty.showPopup(nifty.getCurrentScreen(), popup.getId(), null); 
-	}
-
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public void createPopupMenuImport()
-	{
-		popup = nifty.createPopup("niftyPopupMenu");
-		Menu imported = popup.findNiftyControl("#menu", Menu.class);
-		imported.setWidth(new SizeValue("140px")); 
-		nifty.subscribe(nifty.getCurrentScreen(), imported.getId(), MenuItemActivatedEvent.class, new MenuControl());
+		Main.getEditor().loadFromFile("Import block", "", "");
 	}
 
 	@Override
